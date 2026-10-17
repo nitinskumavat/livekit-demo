@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Voice Agent Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app" class="app" data-state="precall">
+      <header class="topbar">
+        <div class="brand">
+          <span class="live-dot" aria-hidden="true"></span>
+          Voice assistant
+        </div>
+        <time id="timer" class="timer" hidden>00:00</time>
+      </header>
+
+      <section class="stage">
+        <div id="viz" class="viz" aria-hidden="true"></div>
+        <h1 id="state-label" class="state-label">Ready when you are</h1>
+        <p id="state-hint" class="state-hint">Start a call and talk to the assistant out loud.</p>
+      </section>
+
+      <section id="transcript" class="transcript" aria-live="polite" aria-label="Conversation">
+        <p class="transcript-empty">What you and the assistant say will show up here.</p>
+      </section>
+
+      <footer class="controls">
+        <button id="mic-btn" class="mic-btn" aria-pressed="false" disabled>
+          <span class="mic-icon" aria-hidden="true">
+            <span class="mic-ring"></span>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="3" width="6" height="11" rx="3" />
+              <path d="M5 11a7 7 0 0 0 14 0M12 18v3" />
+              <path class="mic-slash" d="M4 4l16 16" />
+            </svg>
+          </span>
+          <span id="mic-label" class="mic-label">Mic</span>
+        </button>
+
+        <button id="call-btn" class="call-btn">Start call</button>
+      </footer>
+    </div>
+
+    <div id="audio-container" hidden></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/livekit-client@2.23.0/dist/livekit-client.umd.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

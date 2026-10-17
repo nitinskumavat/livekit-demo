@@ -1,0 +1,5 @@
+livekit-agents[deepgram,cartesia,google,openai]==1.8.8
+livekit-api==1.2.2
+fastapi==0.143.3
+uvicorn==0.54.0
+python-dotenv==1.2.4
