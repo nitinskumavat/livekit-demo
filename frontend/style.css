@@ -48,8 +48,10 @@ button:disabled {
 /* ---------- Layout ---------- */
 
 .app {
-  display: grid;
-  grid-template-rows: auto auto 1fr auto;
+  /* flex column: the transcript takes the remaining height, and the optional
+     timing panel can be hidden without shifting the other rows */
+  display: flex;
+  flex-direction: column;
   gap: 8px;
   max-width: 720px;
   height: 100%;
@@ -85,9 +87,29 @@ button:disabled {
   box-shadow: 0 0 0 4px rgb(244 183 64 / 0.18);
 }
 
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .timer {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
+}
+
+.lab-toggle {
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: none;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.lab-toggle[aria-pressed="true"] {
+  border-color: var(--amber);
+  color: var(--amber);
 }
 
 /* ---------- Stage ---------- */
@@ -188,9 +210,93 @@ button:disabled {
   color: var(--cyan);
 }
 
+/* ---------- Voice Lab (timing panel) ---------- */
+
+.lab {
+  padding: 14px 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.lab-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.lab-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.lab-total {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--amber);
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-stages {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lab-row {
+  display: grid;
+  grid-template-columns: 9.5rem 1fr 4.5rem;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+}
+
+.lab-name {
+  color: var(--muted);
+}
+
+.lab-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.lab-bar {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: var(--amber);
+}
+
+.lab-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-empty,
+.lab-note,
+.lab-history {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.lab-empty {
+  margin: 0;
+}
+
+.lab-history:empty {
+  display: none;
+}
+
 /* ---------- Transcript ---------- */
 
 .transcript {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -357,6 +463,25 @@ button:disabled {
   .viz {
     gap: 5px;
     height: 96px;
+  }
+
+  /* make room for the transcript only while the timing panel is open */
+  .app:has(.lab:not([hidden])) .stage {
+    padding: 12px 0 8px;
+  }
+
+  .app:has(.lab:not([hidden])) .viz {
+    height: 64px;
+    margin-bottom: 12px;
+  }
+
+  .lab {
+    padding: 12px 16px;
+  }
+
+  .lab-row {
+    grid-template-columns: 7.5rem 1fr 4rem;
+    gap: 8px;
   }
 
   .bar {

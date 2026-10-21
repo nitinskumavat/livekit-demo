@@ -183,6 +183,7 @@ async function startCall() {
   segments.clear();
   userSegmentTimes.clear();
   transcriptEl.replaceChildren(transcriptPlaceholder.cloneNode(true));
+  VoiceLab.reset();
   callBtn.disabled = true;
   setState("connecting");
 
@@ -209,6 +210,9 @@ async function startCall() {
       if (participant !== agentParticipant) return;
       agentParticipant = null;
       failCall("The assistant left the call", "Check the terminal running lk agent dev for errors, then start a new call.");
+    })
+    .on(RoomEvent.DataReceived, (payload, _participant, _kind, topic) => {
+      VoiceLab.handleData(payload, topic);
     })
     .on(RoomEvent.TrackSubscribed, (track, _pub, participant) => {
       if (track.kind !== Track.Kind.Audio) return;

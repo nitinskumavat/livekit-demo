@@ -58,10 +58,44 @@ under a random deployment ID, and the local server does not dispatch jobs to it.
 - "Roll a 20-sided die." (calls `roll_dice`)
 - Interrupt the agent while it is talking: it stops and listens.
 
+## Voice Lab: response timing
+
+The **Response time** panel (toggle with **Timing**) shows, for each reply, how long each
+stage took. LiveKit measures these itself; `backend/voice_lab.py` only forwards them.
+
+| Stage | What it measures |
+|---|---|
+| Turn detection | End of your speech → the agent deciding your turn is over |
+| Transcription | End of your speech → Deepgram's final transcript |
+| LLM first token | Request sent to the LLM → first token back |
+| TTS first audio | First text sent to Cartesia → first audio back |
+| **Total** | You stopped speaking → the agent started speaking |
+
+The LLM starts before the turn is confirmed (preemptive generation), so stages overlap and
+don't add up to the total. There is one report per turn, taken from the first reply you hear.
+Replies that call a tool take longer: the LLM runs once to pick the tool and again to answer,
+and "LLM first token" shows only one of those calls, so the extra time appears in the total.
+The greeting has no user turn before it, so its user stages and total show "—".
+
+## Tests
+
+```bash
+cd backend
+uv pip install --python .venv/bin/python -r requirements-dev.txt
+.venv/bin/python -m pytest              # all tests (calls the real LLM)
+.venv/bin/python -m pytest -m "not llm" # offline tests only
+```
+
+The `llm` tests drive the agent with text through the real model from `LLM_PROVIDER`, so they
+check what it decides and says (tool calls, speakable replies), not speech or timing.
+
 ## Files
 
 | File | Purpose |
 |---|---|
 | `backend/agent.py` | Agent instructions, tools, and the voice pipeline |
 | `backend/server.py` | `POST /api/token` (new room + token per user) and serves `frontend/` |
+| `backend/voice_lab.py` | Pairs each user turn with the agent's reply and publishes its timings |
+| `backend/tests/` | pytest suite: timing reports, config checks, agent behaviour |
+| `frontend/voice-lab.js` | Draws the Response time panel |
 | `frontend/app.js` | Connects to the room, plays agent audio, shows transcripts and agent state |

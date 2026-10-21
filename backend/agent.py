@@ -17,6 +17,8 @@ from livekit.agents import (
 )
 from livekit.plugins import cartesia, deepgram, google, openai
 
+from voice_lab import attach_voice_lab
+
 load_dotenv()
 
 logger = logging.getLogger("demo-agent")
@@ -86,6 +88,7 @@ async def entrypoint(ctx: JobContext) -> None:
             "interruption": {"mode": "vad"},
         },
     )
+    attach_voice_lab(session, ctx.room)
 
     await session.start(agent=Assistant(), room=ctx.room)
     await session.generate_reply(instructions="Greet the user briefly and offer your help.")

@@ -19,13 +19,26 @@
           <span class="live-dot" aria-hidden="true"></span>
           Voice assistant
         </div>
-        <time id="timer" class="timer" hidden>00:00</time>
+        <div class="topbar-right">
+          <time id="timer" class="timer" hidden>00:00</time>
+          <button id="lab-toggle" class="lab-toggle" aria-pressed="true" aria-controls="lab">Timing</button>
+        </div>
       </header>
 
       <section class="stage">
         <div id="viz" class="viz" aria-hidden="true"></div>
         <h1 id="state-label" class="state-label">Ready when you are</h1>
         <p id="state-hint" class="state-hint">Start a call and talk to the assistant out loud.</p>
+      </section>
+
+      <section id="lab" class="lab" aria-label="Response time">
+        <div class="lab-head">
+          <h2 class="lab-title">Response time</h2>
+          <span id="lab-total" class="lab-total">—</span>
+        </div>
+        <div id="lab-stages" class="lab-stages"></div>
+        <p class="lab-note">Stages overlap, so they don't add up to the total.</p>
+        <p id="lab-history" class="lab-history"></p>
       </section>
 
       <section id="transcript" class="transcript" aria-live="polite" aria-label="Conversation">
@@ -52,6 +65,7 @@
     <div id="audio-container" hidden></div>
 
     <script src="https://cdn.jsdelivr.net/npm/livekit-client@2.23.0/dist/livekit-client.umd.js"></script>
+    <script src="voice-lab.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
